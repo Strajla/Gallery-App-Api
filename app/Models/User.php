@@ -7,16 +7,16 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
-use App\Models\Gallerie;
+use App\Models\Gallery;
 
 class User extends Authenticatable implements JWTSubject
 {
     use HasFactory, Notifiable;
 
     public function galleries() {
-        return $this->hasMany(Gallerie::class);
+        return $this->hasMany(Gallery::class);
     }
-    
+
     /**
      * The attributes that are mass assignable.
      *
