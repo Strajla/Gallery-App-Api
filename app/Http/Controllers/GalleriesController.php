@@ -63,6 +63,9 @@ class GalleriesController extends Controller
         $results= [
             'id' => $gallery->id,
             'name'=>$gallery->name,
+            'description'=>$gallery->description,
+            'created_at'=>$gallery->created_at,
+            'updated_at'=>$gallery->updated_at,
             'images'=>$images,
             'user'=>$user
         ];

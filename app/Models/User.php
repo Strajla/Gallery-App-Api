@@ -17,6 +17,11 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany(Gallery::class);
     }
 
+    public function images() {
+        return $this->hasMany(Image::class);
+    }
+
+
     /**
      * The attributes that are mass assignable.
      *
