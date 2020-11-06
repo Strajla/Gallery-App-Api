@@ -48,7 +48,8 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $user = User::with('galleries', 'galleries.images')->findOrFail($id);
+        $user = User::with('galleries', 'galleries.images', 'galleries.comments')->findOrFail($id);
+
         // $galleries = $user->galleries;
         // $results= [
         //     'id' => $user->id,

@@ -26,6 +26,11 @@ class AuthController extends Controller
         return response()->json(compact('token'));
     }
 
+    public function loggedUser() {
+        $user = auth('api')->user();
+        return $loggedUser = User::with('galleries', 'galleries.images', 'galleries.comments')->findOrFail($user->id);
+    }
+
     public function refreshToken()
     {
         return [
@@ -35,7 +40,6 @@ class AuthController extends Controller
 
     public function logout()
     {
-        echo 'im out baby';
         auth('api')->logout(true);
     }
 

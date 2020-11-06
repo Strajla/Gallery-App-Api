@@ -4,6 +4,8 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 
+use App\Models\Comment;
+
 class CommentSeeder extends Seeder
 {
     /**
@@ -13,6 +15,6 @@ class CommentSeeder extends Seeder
      */
     public function run()
     {
-        //
+        Comment::factory()->times(20)->create();
     }
 }

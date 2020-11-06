@@ -2,17 +2,18 @@
 
 namespace Database\Factories;
 
-use App\Models\Comment;
+use App\Models\User;
+use App\Models\Gallery;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class CommentFactory extends Factory
+class CommentsFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = Comment::class;
+    protected $model = Model::class;
 
     /**
      * Define the model's default state.
@@ -22,7 +23,9 @@ class CommentFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'text' => $faker->sentence(2),
+            'user_id' => User::inRandomOrder()->first()->id,
+            'gallery_id' => Gallery::inRandomOrder()->first()->id
         ];
     }
 }

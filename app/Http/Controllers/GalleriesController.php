@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\CreateGalleryRequest;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\AuthController;
 use App\Models\Gallery;
 use App\Models\Image;
 use App\Models\User;
+use App\Models\Comment;
 
 class GalleriesController extends Controller
 {
@@ -21,7 +24,7 @@ class GalleriesController extends Controller
 
         // return response()->json($galleries); 
 
-    $results = Gallery::with('user', 'images');
+    $results = Gallery::with('user', 'images', 'comments');
     $galleries = $results->get();
 
     return response()->json($galleries);
@@ -32,17 +35,18 @@ class GalleriesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateGalleryRequest $request)
     {
         $data = $request->validated();
         $user = User::findOrFail($request['id']);
+        $user_id = $user->id;
         $gallery= Gallery::create([
             "name"=>$data['name'],
             "description"=>$data['description'],
-            'user_id' => $user['id'],
+            'user_id' => $user_id
         ]);
         foreach($data['listOfSource'] as $source) {
-            $gallery->addImage($source, $gallery['id']);
+            $gallery->addImages($source, $gallery['id']);
         }
         
         return response()->json($gallery);
@@ -60,6 +64,7 @@ class GalleriesController extends Controller
 
         $gallery = Gallery::findOrFail($id);
         $images = $gallery->images;
+        $comments = $gallery->comments;
         $user = $gallery->user;
         $results= [
             'id' => $gallery->id,
@@ -68,7 +73,8 @@ class GalleriesController extends Controller
             'created_at'=>$gallery->created_at,
             'updated_at'=>$gallery->updated_at,
             'images'=>$images,
-            'user'=>$user
+            'user'=>$user,
+            'comments'=>$comments
         ];
 
         return response()->json($results);
