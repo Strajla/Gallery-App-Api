@@ -32,20 +32,20 @@ class GalleriesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
+        $data = $request->validated();
+        $user = User::findOrFail($request['id']);
+        $gallery= Gallery::create([
+            "name"=>$data['name'],
+            "description"=>$data['description'],
+            'user_id' => $user['id'],
+        ]);
+        foreach($data['listOfSource'] as $source) {
+            $gallery->addImage($source, $gallery['id']);
+        }
+        
+        return response()->json($gallery);
     }
 
     /**
