@@ -21,6 +21,9 @@ use App\Http\Controllers\CommentsController;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+
+
 Route::get('/galleries', [GalleriesController::class, 'index']);
 Route::get('/galleries/{id}', [GalleriesController::class, 'show']);
 Route::post('/galleries', [GalleriesController::class, 'store']);

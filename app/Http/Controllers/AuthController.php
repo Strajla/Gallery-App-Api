@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use App\Models\User;
+use App\Models\Gallery;
+
 
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Facades\JWTFactory;
@@ -26,7 +28,7 @@ class AuthController extends Controller
         return response()->json(compact('token'));
     }
 
-    public function loggedUser() {
+    public function loggedUser(Request $request) {
         $user = auth('api')->user();
         return $loggedUser = User::with('galleries', 'galleries.images', 'galleries.comments')->findOrFail($user->id);
     }
