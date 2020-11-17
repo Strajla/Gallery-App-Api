@@ -18,16 +18,27 @@ class GalleriesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        // $galleries = Gallery::all();
 
-        // return response()->json($galleries); 
-
-    $results = Gallery::with('user', 'images', 'comments');
-    $galleries = $results->get();
-
-    return response()->json($galleries);
+        $galleries = Gallery::with('user', 'images', 'comments')->limit($request->header('numberPerPage'))->get();
+        $galleriesQuery = Gallery::query();
+        $galleriesQuery->with('user', 'images', 'comments');
+        $search = $request->header('searchText');
+        $galleriesQuery->where( functioN($query) use ($search) {
+            $query->where('name', 'like', '%' . $search . '%')
+                ->orWhere('description', 'like', '%' . $search . '%')
+                ->orwhereHas('user', function($que) use ($search) {
+                    $que->where('first_name', 'like', '%' . $search . '%')
+                        ->orWhere('last_name', 'like', '%' . $search . '%');
+                });
+        });
+    
+        $galleries = $galleriesQuery->take($request->header('pagination'))->get();
+        $count = $galleriesQuery->count();
+    
+        return [$galleries, $count];
+   
     }
 
     /**

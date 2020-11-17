@@ -28,6 +28,7 @@ Route::delete('/galleries/{id}', [GalleriesController::class, 'destroy']);
 
 
 // User
+Route::get('/your-galleries', [UserController::class, 'userGall']);
 Route::get('/authors/{id}', [UserController::class, 'show']);
 
 // Comments
